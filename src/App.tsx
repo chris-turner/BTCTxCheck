@@ -10,8 +10,8 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { apps, flash, send } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
+import { add, apps, settings } from 'ionicons/icons';
+import AddTx from './pages/AddTx';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Details from './pages/Details';
@@ -34,30 +34,31 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { logoBitcoin } from 'ionicons/icons';
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
+          <Route path="/AddTx" component={AddTx} exact={true} />
           <Route path="/tab2" component={Tab2} exact={true} />
           <Route path="/tab2/details" component={Details} />
           <Route path="/tab3" component={Tab3} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
+          <Route path="/" render={() => <Redirect to="/AddTx" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={flash} />
-            <IonLabel>Tab One</IonLabel>
+          <IonTabButton tab="Add Tx" href="/AddTx">
+            <IonIcon icon={add} />
+            <IonLabel>Add Transaction</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={apps} />
-            <IonLabel>Tab Two</IonLabel>
+            <IonIcon icon={logoBitcoin} />
+            <IonLabel>My Transactions</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={send} />
-            <IonLabel>Tab Three</IonLabel>
+            <IonIcon icon={settings} />
+            <IonLabel>Settings</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
