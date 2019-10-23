@@ -24,12 +24,12 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab One</IonTitle>
+          <IonTitle>Bitcoin Transaction Check</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonCard className="welcome-card">
-          <img src="/assets/shapes.svg" alt="" />
+          <img src="https://image.shutterstock.com/image-vector/bitcoin-logo-currency-crypto-here-260nw-767986060.jpg" alt="" />
           <IonCardHeader>
             <IonCardSubtitle>Get Started</IonCardSubtitle>
             <IonCardTitle>Welcome to Ionic</IonCardTitle>
