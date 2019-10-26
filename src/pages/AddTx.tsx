@@ -1,16 +1,11 @@
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
   IonContent,
   IonHeader,
-  IonIcon,
   IonItem,
   IonLabel,
-  IonList,
-  IonListHeader,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -23,8 +18,11 @@ import { add } from 'ionicons/icons';
 import React from 'react';
 import './AddTx.css';
 
-const AddTx: React.FC = () => {
-  return (
+class AddTx extends React.Component {
+  
+
+  render(){
+   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -42,27 +40,35 @@ const AddTx: React.FC = () => {
             </p>
           </IonCardContent>
         </IonCard>
+      
         <IonItem>
       <IonLabel position="stacked">Transaction ID</IonLabel>
-      <IonInput placeholder="Transaction ID"></IonInput>
+      <IonInput placeholder="Transaction ID" name="txIDInput"></IonInput>
     </IonItem>
     <IonItem>
         <IonLabel>Notify after</IonLabel>
-        <IonSelect
+       {/* <IonSelect
           placeholder="0">
           <IonSelectOption value="1">1</IonSelectOption>
           <IonSelectOption value="2">2</IonSelectOption>
           <IonSelectOption value="3">3</IonSelectOption>
           <IonSelectOption value="4">4</IonSelectOption>
           <IonSelectOption value="5">5</IonSelectOption>
-        </IonSelect>
+       </IonSelect> */}
+       <IonInput></IonInput>
         <IonLabel>confirmations</IonLabel>
       </IonItem>
     <IonButton expand="block" fill="outline">Add Transaction</IonButton>
-    
+
       </IonContent>
     </IonPage>
   );
+}
+
+
+
+
 };
+
 
 export default AddTx;
