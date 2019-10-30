@@ -12,9 +12,9 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { add, apps, settings } from 'ionicons/icons';
 import AddTx from './pages/AddTx';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
-import Details from './pages/Details';
+import MyTransactions from './pages/MyTransactions';
+import Settings from './pages/Settings';
+import Details from './pages/TxDetails';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -42,9 +42,9 @@ const App: React.FC = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/AddTx" component={AddTx} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab2/details" component={Details} />
-          <Route path="/tab3" component={Tab3} />
+          <Route path="/mytransactions" component={MyTransactions} exact={true} />
+          <Route path="/mytransactions/txdetails" component={Details} />
+          <Route path="/settings" component={Settings} />
           <Route path="/" render={() => <Redirect to="/AddTx" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
@@ -52,11 +52,11 @@ const App: React.FC = () => (
             <IonIcon icon={add} />
             <IonLabel>Add Transaction</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+          <IonTabButton tab="My Transactions" href="/MyTransactions">
             <IonIcon icon={logoBitcoin} />
             <IonLabel>My Transactions</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="Settings" href="/Settings">
             <IonIcon icon={settings} />
             <IonLabel>Settings</IonLabel>
           </IonTabButton>
