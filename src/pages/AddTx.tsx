@@ -18,17 +18,22 @@ import React from 'react';
 import './AddTx.css';
 import logo from '../logo.png'
 
-class AddTx extends React.Component {
+class AddTx extends React.Component<{},any> {
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      newTxId: ''
-    };
-
-    this.txDescChange = this.txDescChange.bind(this);
+    this.state = { newTxId: ''};
+    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  handleChange(event:any) {
+    this.setState({newTxId: event.target.value});
+  }
+  handleSubmit(event:any) {
+    alert('Tx ID: ' + this.state.newTxId);
+   event.preventDefault();
+  }
   render() {
     return (
       <IonPage>
@@ -48,10 +53,10 @@ class AddTx extends React.Component {
             </p>
             </IonCardContent>
           </IonCard>
-
+          <form onSubmit={this.handleSubmit}>
           <IonItem>
             <IonLabel position="stacked">Transaction ID</IonLabel>
-            <IonInput placeholder="Transaction ID" name="txIDInput"></IonInput>
+            <IonInput placeholder="Transaction ID" type="text" value={this.state.newTxId} onInput={this.handleChange} name="txIDInput"></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Transaction Description</IonLabel>
@@ -59,19 +64,11 @@ class AddTx extends React.Component {
           </IonItem>
           <IonItem>
             <IonLabel>Notify after</IonLabel>
-            {/* <IonSelect
-          placeholder="0">
-          <IonSelectOption value="1">1</IonSelectOption>
-          <IonSelectOption value="2">2</IonSelectOption>
-          <IonSelectOption value="3">3</IonSelectOption>
-          <IonSelectOption value="4">4</IonSelectOption>
-          <IonSelectOption value="5">5</IonSelectOption>
-       </IonSelect> */}
             <IonInput placeholder="#"></IonInput>
             <IonLabel>confirmations</IonLabel>
           </IonItem>
-          <IonButton expand="block" fill="outline" onClick={addTransaction}>Add Transaction</IonButton>
-
+          <IonButton expand="block" fill="outline" type="submit">Add Transaction</IonButton>
+          </form>
         </IonContent>
       </IonPage>
     );
