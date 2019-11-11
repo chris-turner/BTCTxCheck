@@ -22,16 +22,25 @@ class AddTx extends React.Component<{},any> {
 
   constructor(props: any) {
     super(props);
-    this.state = { newTxId: ''};
+    this.state = { newTxId: '', newTxDesc: '', newTxConfNum: 0};
     
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTxIdChange = this.handleTxIdChange.bind(this);
+    this.handleTxDescChange = this.handleTxDescChange.bind(this);
+    this.handleConfNumChange = this.handleConfNumChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(event:any) {
+  handleTxIdChange(event:any) {
     this.setState({newTxId: event.target.value});
   }
+  handleTxDescChange(event:any) {
+    this.setState({newTxDesc: event.target.value});
+  }
+  handleConfNumChange(event:any) {
+    this.setState({newTxConfNum: event.target.value});
+  }
+
   handleSubmit(event:any) {
-    alert('Tx ID: ' + this.state.newTxId);
+    alert('Tx ID: ' + this.state.newTxId + ' conf num: ' + this.state.newTxConfNum + ' tx desc:' + this.state.newTxDesc);
    event.preventDefault();
   }
   render() {
@@ -56,15 +65,15 @@ class AddTx extends React.Component<{},any> {
           <form onSubmit={this.handleSubmit}>
           <IonItem>
             <IonLabel position="stacked">Transaction ID</IonLabel>
-            <IonInput placeholder="Transaction ID" type="text" value={this.state.newTxId} onInput={this.handleChange} name="txIDInput"></IonInput>
+            <IonInput placeholder="Transaction ID" type="text"  onInput={this.handleTxIdChange} name="txIDInput"></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Transaction Description</IonLabel>
-            <IonInput placeholder="Description for your tx" name="txDescInput" onChange={this.txDescChange}></IonInput>
+            <IonInput placeholder="Description for your tx" name="txDescInput" onInput={this.handleTxDescChange}></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>Notify after</IonLabel>
-            <IonInput placeholder="#"></IonInput>
+            <IonInput placeholder="#" onInput={this.handleConfNumChange}></IonInput>
             <IonLabel>confirmations</IonLabel>
           </IonItem>
           <IonButton expand="block" fill="outline" type="submit">Add Transaction</IonButton>
