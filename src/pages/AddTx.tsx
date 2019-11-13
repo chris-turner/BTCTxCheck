@@ -17,6 +17,7 @@ import {
 import React from 'react';
 import './AddTx.css';
 import logo from '../logo.png'
+import Transaction from '../models/Transaction';
 
 class AddTx extends React.Component<{},any> {
 
@@ -48,7 +49,6 @@ class AddTx extends React.Component<{},any> {
     else 
     {
       addTransaction(this.state.newTxId,this.state.newTxConfNum,this.state.newTxDesc);
-      //alert('Tx ID: ' + this.state.newTxId + ' conf num: ' + this.state.newTxConfNum + ' tx desc:' + this.state.newTxDesc);
     }
 
    event.preventDefault();
@@ -96,7 +96,7 @@ validateTxData()
           <form onSubmit={this.handleSubmit}>
           <IonItem>
             <IonLabel position="stacked">Transaction ID</IonLabel>
-            <IonInput placeholder="Transaction ID" type="text"  onInput={this.handleTxIdChange} name="txIDInput"></IonInput>
+            <IonInput placeholder="Transaction ID" type="text" onInput={this.handleTxIdChange} name="txIDInput"></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Transaction Description</IonLabel>
@@ -117,8 +117,11 @@ validateTxData()
 };
 
 function addTransaction(txID:string, txConfNums:number, txDesc:string) {
+  let tx:Transaction;
   fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
-  .then(data => alert(data.confirmations));
+  .then(function newTx(data) {tx = new Transaction(data.hash, txDesc, data.confirmations,txConfNums) 
+    alert(tx.txID);});
+  
 }
 
 export default AddTx;
