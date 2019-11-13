@@ -40,9 +40,40 @@ class AddTx extends React.Component<{},any> {
   }
 
   handleSubmit(event:any) {
-    alert('Tx ID: ' + this.state.newTxId + ' conf num: ' + this.state.newTxConfNum + ' tx desc:' + this.state.newTxDesc);
+    let errorMsg = this.validateTxData();
+    if (errorMsg != '')
+    {
+      alert(errorMsg);
+    }
+    else 
+    {
+      addTransaction(this.state.newTxId,this.state.newTxConfNum,this.state.newTxDesc);
+      //alert('Tx ID: ' + this.state.newTxId + ' conf num: ' + this.state.newTxConfNum + ' tx desc:' + this.state.newTxDesc);
+    }
+
    event.preventDefault();
   }
+
+validateTxData()
+{
+  let errorMsg = '';
+    if (this.state.newTxId === '')
+    {
+      errorMsg += '\nTransaction ID cannot be blank';
+    }
+
+    if (this.state.newTxDesc === '')
+    {
+      errorMsg += '\nTransaction Description cannot be blank';
+    }
+
+    if (this.state.newTxConfNum === 0)
+    {
+      errorMsg += '\nNumber of Confirmations cannot be blank';
+    }
+    return errorMsg;
+}
+
   render() {
     return (
       <IonPage>
@@ -83,14 +114,11 @@ class AddTx extends React.Component<{},any> {
     );
   }
 
-  txDescChange() {
-
-  }
-
 };
 
-function addTransaction() {
-
+function addTransaction(txID:string, txConfNums:number, txDesc:string) {
+  fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
+  .then(data => alert(data.confirmations));
 }
 
 export default AddTx;
