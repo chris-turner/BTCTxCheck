@@ -14,7 +14,7 @@ import { add, apps, settings } from 'ionicons/icons';
 import AddTx from './pages/AddTx';
 import MyTransactions from './pages/MyTransactions';
 import Settings from './pages/Settings';
-import Details from './pages/TxDetails';
+import TxDetails from './pages/TxDetails';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -43,7 +43,7 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           <Route path="/AddTx" component={AddTx} exact={true} />
           <Route path="/mytransactions" component={MyTransactions} exact={true} />
-          <Route path="/mytransactions/txdetails" component={Details} />
+          <Route path="/mytransactions/txdetails/:id" component={TxDetails} />
           <Route path="/settings" component={Settings} />
           <Route path="/" render={() => <Redirect to="/AddTx" />} exact={true} />
         </IonRouterOutlet>
