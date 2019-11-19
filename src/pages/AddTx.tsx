@@ -20,17 +20,15 @@ import logo from '../logo.png'
 import Transaction from '../models/Transaction';
 import { Plugins } from '@capacitor/core';
 
+const { Device } = Plugins;
 const { Storage } = Plugins;
+//https://capacitor.ionicframework.com/docs/apis/device
 //https://capacitor.ionicframework.com/docs/apis/storage/
 class AddTx extends React.Component<{},any> {
 
-  constructor(props: any,private storage: IonicStorageModule) {
+  constructor(props: any) {
     super(props);
     this.state = { newTxId: '', newTxDesc: '', newTxConfNum: 0};
-    storage.forRoot({
-      name: '__mydb',
-      driverOrder: ['indexeddb', 'sqlite', 'websql']
-    });
     
     this.handleTxIdChange = this.handleTxIdChange.bind(this);
     this.handleTxDescChange = this.handleTxDescChange.bind(this);
@@ -55,7 +53,7 @@ class AddTx extends React.Component<{},any> {
     }
     else 
     {
-      addTransaction(this.state.newTxId,this.state.newTxConfNum,this.state.newTxDesc, storage);
+      addTransaction(this.state.newTxId,this.state.newTxConfNum,this.state.newTxDesc);
     }
 
    event.preventDefault();
@@ -123,21 +121,40 @@ validateTxData()
 
 };
 
-function addTransaction(txID:string, txConfNums:number, txDesc:string,storage:IonicStorageModule) {
+function addTransaction(txID:string, txConfNums:number, txDesc:string) {
   let tx:Transaction;
   fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
   .then(function newTx(data) {
     tx = new Transaction(data.hash, txDesc, data.confirmations,txConfNums) 
-    storage.get(data.hash).then((val: any) => {
+    getObject(data.hash).then((val: any) => {
       if(val != null){
-          alert('You have already added this transaction.')
+          alert('You have already added this transaction.');
       }
       else
-      IonicStorage.set(data.hash,tx);});
+      setObject(data.hash,tx);
+      alert('Tx' + data.hash +' added! You will be alerted after ' + tx.confirmationsToAlertOn +' confirmations.')
+    });
       ;
     })
     
   
+}
+
+async function setObject(newKey:string, newVal:Transaction) {
+  await Storage.set({
+    key: newKey,
+    value: JSON.stringify(newVal)
+  });
+}
+
+async function getObject(objKey:string) {
+  const ret = await Storage.get({ key: objKey });
+  if (ret.value == null)
+  {
+    return null;
+  }
+  else
+  return JSON.parse(ret.value);
 }
 
 export default AddTx;
