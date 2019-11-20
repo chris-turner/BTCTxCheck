@@ -18,66 +18,59 @@ import React from 'react';
 import './AddTx.css';
 import logo from '../logo.png'
 import Transaction from '../models/Transaction';
-import { Plugins } from '@capacitor/core';
+import DataAccess from '../models/DataAccess';
 
-const { Device } = Plugins;
-const { Storage } = Plugins;
 //https://capacitor.ionicframework.com/docs/apis/device
 //https://capacitor.ionicframework.com/docs/apis/storage/
-class AddTx extends React.Component<{},any> {
+
+class AddTx extends React.Component<{}, any> {
 
   constructor(props: any) {
     super(props);
-    this.state = { newTxId: '', newTxDesc: '', newTxConfNum: 0};
-    
+    this.state = { newTxId: '', newTxDesc: '', newTxConfNum: 0 };
+
     this.handleTxIdChange = this.handleTxIdChange.bind(this);
     this.handleTxDescChange = this.handleTxDescChange.bind(this);
     this.handleConfNumChange = this.handleConfNumChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleTxIdChange(event:any) {
-    this.setState({newTxId: event.target.value});
+  handleTxIdChange(event: any) {
+    this.setState({ newTxId: event.target.value });
   }
-  handleTxDescChange(event:any) {
-    this.setState({newTxDesc: event.target.value});
+  handleTxDescChange(event: any) {
+    this.setState({ newTxDesc: event.target.value });
   }
-  handleConfNumChange(event:any) {
-    this.setState({newTxConfNum: event.target.value});
+  handleConfNumChange(event: any) {
+    this.setState({ newTxConfNum: event.target.value });
   }
 
-  handleSubmit(event:any) {
+  handleSubmit(event: any) {
     let errorMsg = this.validateTxData();
-    if (errorMsg != '')
-    {
+    if (errorMsg != '') {
       alert(errorMsg);
     }
-    else 
-    {
-      addTransaction(this.state.newTxId,this.state.newTxConfNum,this.state.newTxDesc);
+    else {
+      addTransaction(this.state.newTxId, this.state.newTxConfNum, this.state.newTxDesc);
     }
 
-   event.preventDefault();
+    event.preventDefault();
   }
 
-validateTxData()
-{
-  let errorMsg = '';
-    if (this.state.newTxId === '')
-    {
+  validateTxData() {
+    let errorMsg = '';
+    if (this.state.newTxId === '') {
       errorMsg += '\nTransaction ID cannot be blank';
     }
 
-    if (this.state.newTxDesc === '')
-    {
+    if (this.state.newTxDesc === '') {
       errorMsg += '\nTransaction Description cannot be blank';
     }
 
-    if (this.state.newTxConfNum === 0)
-    {
+    if (this.state.newTxConfNum === 0) {
       errorMsg += '\nNumber of Confirmations cannot be blank';
     }
     return errorMsg;
-}
+  }
 
   render() {
     return (
@@ -99,20 +92,20 @@ validateTxData()
             </IonCardContent>
           </IonCard>
           <form onSubmit={this.handleSubmit}>
-          <IonItem>
-            <IonLabel position="stacked">Transaction ID</IonLabel>
-            <IonInput placeholder="Transaction ID" type="text" onInput={this.handleTxIdChange} name="txIDInput"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Transaction Description</IonLabel>
-            <IonInput placeholder="Description for your tx" name="txDescInput" onInput={this.handleTxDescChange}></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Notify after</IonLabel>
-            <IonInput placeholder="#" onInput={this.handleConfNumChange}></IonInput>
-            <IonLabel>confirmations</IonLabel>
-          </IonItem>
-          <IonButton expand="block" fill="outline" type="submit">Add Transaction</IonButton>
+            <IonItem>
+              <IonLabel position="stacked">Transaction ID</IonLabel>
+              <IonInput placeholder="Transaction ID" type="text" onInput={this.handleTxIdChange} name="txIDInput"></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Transaction Description</IonLabel>
+              <IonInput placeholder="Description for your tx" name="txDescInput" onInput={this.handleTxDescChange}></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonLabel>Notify after</IonLabel>
+              <IonInput placeholder="#" onInput={this.handleConfNumChange}></IonInput>
+              <IonLabel>confirmations</IonLabel>
+            </IonItem>
+            <IonButton expand="block" fill="outline" type="submit">Add Transaction</IonButton>
           </form>
         </IonContent>
       </IonPage>
@@ -121,40 +114,23 @@ validateTxData()
 
 };
 
-function addTransaction(txID:string, txConfNums:number, txDesc:string) {
-  let tx:Transaction;
+function addTransaction(txID: string, txConfNums: number, txDesc: string) {
+  let tx: Transaction;
+  let da: DataAccess;
   fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
-  .then(function newTx(data) {
-    tx = new Transaction(data.hash, txDesc, data.confirmations,txConfNums) 
-    getObject(data.hash).then((val: any) => {
-      if(val != null){
+    .then(function newTx(data) {
+      tx = new Transaction(data.hash, txDesc, data.confirmations, txConfNums)
+      da.getObject(data.hash).then((val: any) => {
+        if (val != null) {
           alert('You have already added this transaction.');
-      }
-      else
-      setObject(data.hash,tx);
-      alert('Tx' + data.hash +' added! You will be alerted after ' + tx.confirmationsToAlertOn +' confirmations.')
-    });
+        }
+        else {
+          da.setObject(data.hash, tx)
+            .then((val: any) => alert('Tx added! You will be alerted after ' + tx.confirmationsToAlertOn + ' confirmations.'))
+        }
+      });
       ;
     })
-    
-  
-}
-
-async function setObject(newKey:string, newVal:Transaction) {
-  await Storage.set({
-    key: newKey,
-    value: JSON.stringify(newVal)
-  });
-}
-
-async function getObject(objKey:string) {
-  const ret = await Storage.get({ key: objKey });
-  if (ret.value == null)
-  {
-    return null;
-  }
-  else
-  return JSON.parse(ret.value);
 }
 
 export default AddTx;
