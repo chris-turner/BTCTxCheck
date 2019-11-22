@@ -20,9 +20,6 @@ import logo from '../logo.png'
 import Transaction from '../models/Transaction';
 import DataAccess from '../models/DataAccess';
 
-//https://capacitor.ionicframework.com/docs/apis/device
-//https://capacitor.ionicframework.com/docs/apis/storage/
-
 class AddTx extends React.Component<{}, any> {
 
   constructor(props: any) {
