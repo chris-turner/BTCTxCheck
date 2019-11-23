@@ -113,7 +113,7 @@ class AddTx extends React.Component<{}, any> {
 
 function addTransaction(txID: string, txConfNums: number, txDesc: string) {
   let tx: Transaction;
-  let da: DataAccess;
+  let da: DataAccess = new DataAccess();
   fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
     .then(function newTx(data) {
       tx = new Transaction(data.hash, txDesc, data.confirmations, txConfNums)

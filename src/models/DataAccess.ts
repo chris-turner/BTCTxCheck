@@ -37,7 +37,7 @@ class DataAccess {
 
     async getKeys() {
         const keys = await Storage.keys();
-        return keys;
+        return keys.keys;
     }
 
     async clear() {
