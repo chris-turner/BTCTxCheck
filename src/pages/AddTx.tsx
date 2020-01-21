@@ -116,17 +116,29 @@ function addTransaction(txID: string, txConfNums: number, txDesc: string) {
   let da: DataAccess = new DataAccess();
   fetch('https://api.blockcypher.com/v1/btc/main/txs/' + txID).then(response => response.json())
     .then(function newTx(data) {
-      tx = new Transaction(data.hash, txDesc, data.confirmations, txConfNums)
-      da.getObject(data.hash).then((val: any) => {
-        if (val != null) {
-          alert('You have already added this transaction.');
-        }
-        else {
-          da.setObject(data.hash, tx)
-            .then((val: any) => alert('Tx added! You will be alerted after ' + tx.confirmationsToAlertOn + ' confirmations.'))
-        }
-      });
-      ;
+      if (data.error.includes('not found')) {
+        tx = new Transaction(txID, txDesc, data.confirmations, txConfNums)
+        alert('Invalid Tx');
+
+        //remove below later
+        da.setObject(txID, tx)
+        .then((val: any) => alert('Tx added! You will be alerted after ' + tx.confirmationsToAlertOn + ' confirmations.'))
+        
+      }
+      else {
+        tx = new Transaction(txID, txDesc, data.confirmations, txConfNums)
+        da.getObject(txID).then((val: any) => {
+          if (val != null) {
+            alert('You have already added this transaction.');
+          }
+          else {
+            da.setObject(txID, tx)
+              .then((val: any) => alert('Tx added! You will be alerted after ' + tx.confirmationsToAlertOn + ' confirmations.'))
+              
+    window.location.reload(false);
+          }
+        });
+      }
     })
 }
 

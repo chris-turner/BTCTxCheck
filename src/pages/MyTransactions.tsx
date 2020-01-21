@@ -1,18 +1,43 @@
 import React from 'react';
 import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import txData from '../Transactions.js';
+import Transaction from '../models/Transaction';
 import DataAccess from '../models/DataAccess';
-
-let da: DataAccess = new DataAccess(); 
-let transactions: string[] = [];
-//da.clear();
 
 class mytransactions extends React.Component<{}, any> {
 
   constructor(props: any) {
     super(props);
+    this.state = { da: new DataAccess(), transactions: [] };
   }
+
+  componentDidMount() {
+    this.getTransactions();
+  }
+
+  componentDidUpdate(){
+    
+  }
+
+
+  getTransactions() {
+    this.state.da.getKeys().then((keys: string[]) =>
+
+      keys.forEach(key =>
+        this.state.da.getItem(key).then((tx: string) => {
+          this.setState((prevState: any) => {
+            let newState = prevState;
+            newState.transactions = prevState.transactions.concat(tx);
+            return newState;
+          });
+        })
+      )
+    )
+  }
+
+
   render() {
+
     return (
       <IonPage>
         <IonHeader>
@@ -22,18 +47,15 @@ class mytransactions extends React.Component<{}, any> {
         </IonHeader>
         <IonContent>
           <IonList>
-            {da.getKeys().then((keys:string[]) =>
-            keys.forEach(key =>
-            da.getItem(key).then((tx:any) => transactions.push(tx))))
-            .then(() =>
-            transactions.map(tx =>
-              <IonItem routerLink={"/mytransactions/txdetails/" + tx}>
-                <IonLabel>
-                  {tx}
-                </IonLabel>
-              </IonItem>))
-              }
-            
+            {
+              this.state.transactions.map((tx: string) =>
+                <IonItem routerLink={"/mytransactions/txdetails/" + tx}>
+                  <IonLabel>
+                    {tx}
+                  </IonLabel>
+                </IonItem>)
+            }
+
           </IonList>
         </IonContent>
       </IonPage>
