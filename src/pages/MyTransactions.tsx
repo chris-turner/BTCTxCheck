@@ -48,10 +48,10 @@ class mytransactions extends React.Component<{}, any> {
         <IonContent>
           <IonList>
             {
-              this.state.transactions.map((tx: string) =>
-                <IonItem routerLink={"/mytransactions/txdetails/" + tx}>
+              this.state.transactions.map((tx: Transaction) =>
+                <IonItem routerLink={"/mytransactions/txdetails/" + tx.txID}>
                   <IonLabel>
-                    {tx}
+                    {tx.txDesc}
                   </IonLabel>
                 </IonItem>)
             }

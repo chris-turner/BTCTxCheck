@@ -55,15 +55,15 @@ class AddTx extends React.Component<{}, any> {
 
   validateTxData() {
     let errorMsg = '';
-    if (this.state.newTxId === '') {
+    if (!this.state.newTxId) {
       errorMsg += '\nTransaction ID cannot be blank';
     }
-
-    if (this.state.newTxDesc === '') {
+alert(this.state.newTxDesc)
+    if (!this.state.newTxDesc) {
       errorMsg += '\nTransaction Description cannot be blank';
     }
 
-    if (this.state.newTxConfNum === 0) {
+    if (!this.state.newTxConfNum) {
       errorMsg += '\nNumber of Confirmations cannot be blank';
     }
     return errorMsg;
@@ -74,19 +74,19 @@ class AddTx extends React.Component<{}, any> {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>BTC Transaction Check</IonTitle>
+            {/* <IonTitle>BTC Transaction Check</IonTitle> */}
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonCard className="welcome-card">
-            <img src={logo} alt="" />
+            {/* <img src={logo} alt="" />
 
             <IonCardContent>
               <IonCardSubtitle style={{ fontWeight: 'bold', color: 'black' }}>Bitcoin Transaction Check</IonCardSubtitle>
               <p>
                 Tired of refreshing your block explorer to check if your transaction has been confirmed? Add a transaction to get notified when it's been confirmed on the blockchain.
             </p>
-            </IonCardContent>
+            </IonCardContent> */}
           </IonCard>
           <form onSubmit={this.handleSubmit}>
             <IonItem>
